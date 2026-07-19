@@ -2,6 +2,7 @@ import cytoscape, { type Core, type ElementDefinition, type StylesheetStyle } fr
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { getNeighborhoodIds, getOverlapIds } from '../domain/graph'
 import type { CosmicWeb } from '../domain/types'
+import { getEmphasisIds, graphLabel } from './graphPresentation'
 import type { ViewMode } from './ViewModeSwitch'
 
 interface GraphCanvasProps {
@@ -17,70 +18,79 @@ const graphStyle = [
     selector: 'node',
     style: {
       label: 'data(label)',
-      'font-family': 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
-      'font-size': 12,
-      'font-weight': 500,
-      color: '#d0d6e0',
-      'text-outline-color': '#08090a',
-      'text-outline-width': 3,
-      'text-wrap': 'wrap',
-      'text-max-width': 170,
+      'font-family': 'Pretendard, Inter, -apple-system, BlinkMacSystemFont, sans-serif',
+      'font-size': 11,
+      'font-weight': 600,
+      color: '#d1fac0',
+      'text-opacity': 0,
+      'text-outline-color': '#0f1117',
+      'text-outline-width': 2,
       'text-valign': 'bottom',
-      'text-margin-y': 9,
-      width: 'mapData(connectionCount, 0, 8, 12, 22)',
-      height: 'mapData(connectionCount, 0, 8, 12, 22)',
-      'background-color': '#8a8f98',
+      'text-margin-y': 7,
+      width: 'mapData(connectionCount, 0, 8, 8, 18)',
+      height: 'mapData(connectionCount, 0, 8, 8, 18)',
+      'background-color': '#91d478',
       'border-width': 0,
-      'transition-property': 'opacity, background-color, border-width, width, height',
-      'transition-duration': 220,
+      'transition-property': 'opacity, background-color, border-width, width, height, text-opacity',
+      'transition-duration': 150,
     },
   },
   {
     selector: 'node[kind = "index"]',
     style: {
-      shape: 'diamond',
-      'background-color': '#7170ff',
-      color: '#c9c8ff',
-      'font-size': 13,
-      'font-weight': 600,
-      width: 'mapData(connectionCount, 0, 8, 14, 28)',
-      height: 'mapData(connectionCount, 0, 8, 14, 28)',
+      shape: 'ellipse',
+      'background-color': '#60a5fa',
+      color: '#bfdbfe',
     },
   },
   {
     selector: 'edge',
     style: {
-      width: 'mapData(weight, 1, 3, 0.65, 1.7)',
-      'line-color': '#686d84',
-      opacity: 0.74,
+      width: 'mapData(weight, 1, 3, 0.55, 1.65)',
+      'line-color': '#93c5fd',
+      opacity: 0.34,
       'curve-style': 'haystack',
       'haystack-radius': 0.35,
       'transition-property': 'opacity, line-color, width',
-      'transition-duration': 220,
+      'transition-duration': 150,
     },
   },
   { selector: '.faded', style: { opacity: 0.07 } },
   { selector: 'edge.faded', style: { opacity: 0.025 } },
+  { selector: 'node.zoom-labeled', style: { 'text-opacity': 1 } },
+  { selector: 'node.hover-neighbor', style: { 'text-opacity': 1 } },
+  { selector: 'node.hover-dim', style: { opacity: 0.1, 'text-opacity': 0 } },
+  { selector: 'edge.hover-dim', style: { opacity: 0.04 } },
+  {
+    selector: 'node.hover-hot',
+    style: {
+      'background-color': '#ffffff',
+      'border-color': 'rgba(255,255,255,0.22)',
+      'border-width': 3,
+      color: '#ffffff',
+      'text-opacity': 1,
+    },
+  },
+  { selector: 'edge.hover-active', style: { opacity: 0.9, width: 2.2 } },
   {
     selector: 'node.selected',
     style: {
-      'background-color': '#9b9aff',
-      'border-color': '#eeeefe',
+      'background-color': '#ffffff',
+      'border-color': 'rgba(145,212,120,0.55)',
       'border-width': 2,
-      width: 26,
-      height: 26,
-      color: '#f7f8f8',
-      'font-size': 13,
+      color: '#ffffff',
+      'text-opacity': 1,
+      'font-size': 11,
       'font-weight': 600,
     },
   },
   {
     selector: 'node.search-hit',
-    style: { 'border-color': '#a8ecff', 'border-width': 2, color: '#f7f8f8' },
+    style: { 'border-color': '#a8ecff', 'border-width': 2, color: '#ffffff', 'text-opacity': 1 },
   },
   {
     selector: 'edge.active',
-    style: { 'line-color': '#828fff', opacity: 0.95, width: 1.8 },
+    style: { 'line-color': '#91d478', opacity: 0.9, width: 1.8 },
   },
 ] as unknown as StylesheetStyle[]
 
@@ -92,7 +102,7 @@ function toElements(web: CosmicWeb): ElementDefinition[] {
   }
   return [
     ...web.nodes.map((node) => ({
-      data: { id: node.id, label: node.label, kind: node.kind, connectionCount: node.connectionCount },
+      data: { id: node.id, label: graphLabel(node.label), kind: node.kind, connectionCount: node.connectionCount },
     })),
     ...web.edges.map((edge) => ({
       data: {
@@ -127,15 +137,39 @@ export function GraphCanvas({ web, mode, selectedId, query, onSelect }: GraphCan
         animate: false,
         fit: true,
         padding: 32,
-        nodeRepulsion: () => 5200,
-        idealEdgeLength: () => 90,
-        edgeElasticity: () => 110,
-        gravity: 0.18,
+        nodeRepulsion: () => 7200,
+        idealEdgeLength: () => 120,
+        edgeElasticity: () => 90,
+        gravity: 0.13,
         numIter: 1400,
         randomize: true,
       },
     })
     cy.on('tap', 'node', (event) => onSelect(event.target.id()))
+    cy.on('mouseover', 'node', (event) => {
+      const anchorId = event.target.id()
+      const emphasis = getEmphasisIds(web, anchorId)
+      cy.batch(() => {
+        cy.elements().removeClass('hover-hot hover-neighbor hover-dim hover-active')
+        cy.nodes().forEach((node) => {
+          if (emphasis.hot.has(node.id())) node.addClass('hover-hot')
+          else if (emphasis.neighbors.has(node.id())) node.addClass('hover-neighbor')
+          else if (emphasis.dimmed.has(node.id())) node.addClass('hover-dim')
+        })
+        cy.edges().forEach((edge) => {
+          if (edge.source().id() === anchorId || edge.target().id() === anchorId) edge.addClass('hover-active')
+          else edge.addClass('hover-dim')
+        })
+      })
+    })
+    cy.on('mouseout', 'node', () => {
+      cy.elements().removeClass('hover-hot hover-neighbor hover-dim hover-active')
+    })
+    const updateZoomLabels = () => {
+      cy.nodes().toggleClass('zoom-labeled', cy.zoom() > 1.65)
+    }
+    cy.on('zoom', updateZoomLabels)
+    updateZoomLabels()
     cyRef.current = cy
     setReady(true)
     window.requestAnimationFrame(() => {
@@ -155,7 +189,7 @@ export function GraphCanvas({ web, mode, selectedId, query, onSelect }: GraphCan
       cy.destroy()
       cyRef.current = null
     }
-  }, [elements, onSelect])
+  }, [elements, onSelect, web])
 
   useEffect(() => {
     const cy = cyRef.current
