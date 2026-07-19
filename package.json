@@ -20,6 +20,7 @@
   "homepage": "https://github.com/currenjin/cosmic-filament#readme",
   "dependencies": {
     "cytoscape": "3.34.0",
+    "cytoscape-d3-force": "^1.1.4",
     "react": "19.2.7",
     "react-dom": "19.2.7"
   },

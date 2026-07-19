@@ -1,9 +1,12 @@
 import cytoscape, { type Core, type ElementDefinition, type StylesheetStyle } from 'cytoscape'
+import d3Force from 'cytoscape-d3-force'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { getNeighborhoodIds, getOverlapIds } from '../domain/graph'
 import type { CosmicWeb } from '../domain/types'
-import { getEmphasisIds, graphLabel } from './graphPresentation'
+import { createInteractiveForceLayoutOptions, getEmphasisIds, graphLabel } from './graphPresentation'
 import type { ViewMode } from './ViewModeSwitch'
+
+cytoscape.use(d3Force)
 
 interface GraphCanvasProps {
   web: CosmicWeb
@@ -134,18 +137,7 @@ export function GraphCanvas({ web, mode, selectedId, query, showLabels, onSelect
       wheelSensitivity: 0.22,
       selectionType: 'single',
       boxSelectionEnabled: false,
-      layout: {
-        name: 'cose',
-        animate: false,
-        fit: true,
-        padding: 32,
-        nodeRepulsion: () => 7200,
-        idealEdgeLength: () => 120,
-        edgeElasticity: () => 90,
-        gravity: 0.13,
-        numIter: 1400,
-        randomize: true,
-      },
+      layout: createInteractiveForceLayoutOptions(),
     })
     cy.on('tap', 'node', (event) => onSelect(event.target.id()))
     cy.on('mouseover', 'node', (event) => {
@@ -174,7 +166,7 @@ export function GraphCanvas({ web, mode, selectedId, query, showLabels, onSelect
     updateZoomLabels()
     cyRef.current = cy
     setReady(true)
-    window.requestAnimationFrame(() => {
+    const fitTimer = window.setTimeout(() => {
       cy.fit(undefined, 32)
       if (containerRef.current && containerRef.current.clientWidth < 600 && cy.zoom() < 0.68) {
         cy.zoom({
@@ -185,8 +177,9 @@ export function GraphCanvas({ web, mode, selectedId, query, showLabels, onSelect
           },
         })
       }
-    })
+    }, 650)
     return () => {
+      window.clearTimeout(fitTimer)
       setReady(false)
       cy.destroy()
       cyRef.current = null

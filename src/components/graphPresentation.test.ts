@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { CosmicWeb } from '../domain/types'
-import { getEmphasisIds, graphLabel } from './graphPresentation'
+import { createInteractiveForceLayoutOptions, getEmphasisIds, graphLabel } from './graphPresentation'
 
 const web: CosmicWeb = {
   nodes: [
@@ -36,5 +36,18 @@ describe('currenjin graph presentation', () => {
   it('shortens long labels in the same compact graph style', () => {
     expect(graphLabel('123456789012345678901')).toBe('1234567890123456789…')
     expect(graphLabel('짧은 제목')).toBe('짧은 제목')
+  })
+
+  it('keeps force physics alive while allowing dragged nodes to spring back into the web', () => {
+    const options = createInteractiveForceLayoutOptions()
+    expect(options).toMatchObject({
+      name: 'd3-force',
+      animate: true,
+      infinite: true,
+      ungrabifyWhileSimulating: false,
+      fixedAfterDragging: false,
+      linkDistance: 120,
+    })
+    expect(options.linkId({ id: 'thought:a' })).toBe('thought:a')
   })
 })
