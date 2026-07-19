@@ -10,6 +10,7 @@ interface GraphCanvasProps {
   mode: ViewMode
   selectedId?: string
   query: string
+  showLabels: boolean
   onSelect: (nodeId: string) => void
 }
 
@@ -58,6 +59,7 @@ const graphStyle = [
   { selector: '.faded', style: { opacity: 0.07 } },
   { selector: 'edge.faded', style: { opacity: 0.025 } },
   { selector: 'node.zoom-labeled', style: { 'text-opacity': 1 } },
+  { selector: 'node.labels-visible', style: { 'text-opacity': 1 } },
   { selector: 'node.hover-neighbor', style: { 'text-opacity': 1 } },
   { selector: 'node.hover-dim', style: { opacity: 0.1, 'text-opacity': 0 } },
   { selector: 'edge.hover-dim', style: { opacity: 0.04 } },
@@ -115,7 +117,7 @@ function toElements(web: CosmicWeb): ElementDefinition[] {
   ]
 }
 
-export function GraphCanvas({ web, mode, selectedId, query, onSelect }: GraphCanvasProps) {
+export function GraphCanvas({ web, mode, selectedId, query, showLabels, onSelect }: GraphCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const cyRef = useRef<Core | null>(null)
   const [ready, setReady] = useState(false)
@@ -216,6 +218,12 @@ export function GraphCanvas({ web, mode, selectedId, query, onSelect }: GraphCan
       })
     })
   }, [mode, query, ready, selectedId, web])
+
+  useEffect(() => {
+    const cy = cyRef.current
+    if (!cy || !ready) return
+    cy.nodes().toggleClass('labels-visible', showLabels)
+  }, [ready, showLabels])
 
   function zoomBy(factor: number) {
     const cy = cyRef.current

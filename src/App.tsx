@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
+import { LabelToggle } from './components/LabelToggle'
 import { NodeDetails } from './components/NodeDetails'
 import { ViewModeSwitch, type ViewMode } from './components/ViewModeSwitch'
 import { loadThoughtDatabase } from './domain/data'
@@ -20,6 +21,7 @@ export default function App({ initialDatabase }: AppProps) {
   const [mode, setMode] = useState<ViewMode>('all')
   const [searchOpen, setSearchOpen] = useState(false)
   const [query, setQuery] = useState('')
+  const [showLabels, setShowLabels] = useState(false)
 
   useEffect(() => {
     if (initialDatabase) return
@@ -101,8 +103,9 @@ export default function App({ initialDatabase }: AppProps) {
       )}
 
       <Suspense fallback={<div className="graph-loading">Cosmic Web을 펼치는 중…</div>}>
-        <GraphCanvas web={web} mode={mode} selectedId={selectedId} query={query} onSelect={selectNode} />
+        <GraphCanvas web={web} mode={mode} selectedId={selectedId} query={query} showLabels={showLabels} onSelect={selectNode} />
       </Suspense>
+      <LabelToggle visible={showLabels} onChange={setShowLabels} />
       <ViewModeSwitch value={mode} onChange={setMode} nearbyDisabled={!selectedId} />
 
       {web.diagnostics.length > 0 && (

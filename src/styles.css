@@ -85,7 +85,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .identity h1 { margin: 0; font-size: 16px; font-weight: 590; letter-spacing: -0.24px; }
 .identity p { margin: 3px 0 0; color: var(--muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-.icon-button, .graph-controls button {
+.icon-button, .graph-controls button, .label-toggle {
   display: grid;
   place-items: center;
   border: 1px solid var(--border);
@@ -95,7 +95,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   cursor: pointer;
 }
 .icon-button { width: 42px; height: 42px; border-radius: 50%; font-size: 21px; }
-.icon-button:hover, .graph-controls button:hover { background: var(--surface-hover); color: var(--text); }
+.icon-button:hover, .graph-controls button:hover, .label-toggle:hover { background: var(--surface-hover); color: var(--text); }
 
 .graph-stage, .cytoscape-canvas { position: absolute; inset: 0; }
 .graph-loading {
@@ -115,6 +115,22 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   gap: 7px;
 }
 .graph-controls button { width: 40px; height: 40px; border-radius: 50%; font-size: 17px; }
+.label-toggle {
+  position: absolute;
+  z-index: 18;
+  top: calc(235px + env(safe-area-inset-top));
+  right: clamp(14px, 3vw, 30px);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 650;
+}
+.label-toggle[aria-pressed="true"] {
+  color: #eeeefe;
+  border-color: rgba(113, 112, 255, 0.42);
+  background: rgba(113, 112, 255, 0.22);
+}
 .legend {
   position: absolute;
   left: clamp(15px, 3vw, 30px);
@@ -318,6 +334,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   .icon-button { width: 39px; height: 39px; }
   .graph-controls { top: calc(83px + env(safe-area-inset-top)); right: 13px; }
   .graph-controls button { width: 42px; height: 42px; }
+  .label-toggle { top: calc(228px + env(safe-area-inset-top)); right: 13px; width: 42px; height: 42px; }
   .legend { bottom: calc(76px + env(safe-area-inset-bottom)); left: 50%; translate: -50% 0; }
   .view-mode { bottom: calc(18px + env(safe-area-inset-bottom)); }
   .diagnostic { display: none; }
