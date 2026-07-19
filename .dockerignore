@@ -1,0 +1,8 @@
+node_modules
+.git
+.github
+coverage
+*.log
+.env*
+public/data/private/
+public/cards/private/

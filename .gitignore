@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+.DS_Store
+*.local
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+.env*
+!/.env.example
+
+# Live Thought DB data is private. Only synthetic public fixtures belong here.
+public/data/private/
+public/cards/private/

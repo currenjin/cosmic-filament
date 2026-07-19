@@ -1,0 +1,16 @@
+{
+  "edges": [
+    { "id": "sample-edge-01", "source": "thought-signal-in-darkness", "target": "concept-small-motion", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "작은 선택이 다음 항로를 만든다" },
+    { "id": "sample-edge-02", "source": "thought-signal-in-darkness", "target": "concept-light", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "어둠 속에 남는 신호를 빛으로 본다" },
+    { "id": "sample-edge-03", "source": "thought-patient-orbit", "target": "concept-small-motion", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "반복 가능한 작은 움직임" },
+    { "id": "sample-edge-04", "source": "thought-table-between-stars", "target": "concept-neighbor", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "함께 머물며 이웃이 되는 장면" },
+    { "id": "sample-edge-05", "source": "thought-table-between-stars", "target": "concept-light", "type": "relates_to", "confidence": "candidate", "basis": "derived", "reason": "각자의 세계가 식탁 위에서 빛난다" },
+    { "id": "sample-edge-06", "source": "thought-question-as-telescope", "target": "concept-question", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "질문을 방향을 보는 도구로 비유한다" },
+    { "id": "sample-edge-07", "source": "thought-question-as-telescope", "target": "concept-responsibility", "type": "relates_to", "confidence": "candidate", "basis": "derived", "reason": "답을 미루지 않는 질문의 책임" },
+    { "id": "sample-edge-08", "source": "thought-question-as-telescope", "target": "concept-curiosity", "type": "relates_to", "confidence": "candidate", "basis": "derived", "reason": "더 멀리 보려는 호기심" },
+    { "id": "sample-edge-09", "source": "thought-light-kept-alive", "target": "concept-light", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "살아 있는 눈빛" },
+    { "id": "sample-edge-10", "source": "thought-light-kept-alive", "target": "concept-curiosity", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "호기심과 생기를 잃지 않기" },
+    { "id": "sample-edge-11", "source": "thought-value-arrives", "target": "concept-responsibility", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "필요한 사람에게 끝까지 닿게 하는 책임" },
+    { "id": "sample-edge-12", "source": "thought-value-arrives", "target": "concept-neighbor", "type": "possible_theme", "confidence": "candidate", "basis": "contextual", "reason": "가치를 받는 구체적인 사람을 본다" }
+  ]
+}

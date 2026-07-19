@@ -1,0 +1,10 @@
+{
+  "concepts": [
+    { "id": "concept-small-motion", "name": "작은 움직임", "status": "sample" },
+    { "id": "concept-light", "name": "빛", "status": "sample" },
+    { "id": "concept-neighbor", "name": "이웃", "status": "sample" },
+    { "id": "concept-question", "name": "질문", "status": "sample" },
+    { "id": "concept-responsibility", "name": "책임", "status": "sample" },
+    { "id": "concept-curiosity", "name": "호기심", "status": "sample" }
+  ]
+}

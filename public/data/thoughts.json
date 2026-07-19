@@ -1,0 +1,64 @@
+{
+  "thoughts": [
+    {
+      "id": "thought-signal-in-darkness",
+      "title": "어둠 속에서도 신호는 남는다",
+      "summary": "보이지 않는 시간에도 작은 선택은 다음 항로를 만든다는 생각.",
+      "created": "2026-01-08T21:10:00+09:00",
+      "source": "sample",
+      "status": "organized",
+      "thought_form": "reflection",
+      "card_path": "cards/thought-signal-in-darkness.md"
+    },
+    {
+      "id": "thought-patient-orbit",
+      "title": "천천히 도는 궤도의 힘",
+      "summary": "빠른 변화보다 반복 가능한 작은 움직임이 더 먼 곳까지 데려간다.",
+      "created": "2026-01-19T07:30:00+09:00",
+      "source": "sample",
+      "status": "organized",
+      "thought_form": "reflection",
+      "card_path": "cards/thought-patient-orbit.md"
+    },
+    {
+      "id": "thought-table-between-stars",
+      "title": "별 사이에 놓인 작은 식탁",
+      "summary": "서로 다른 세계를 가진 사람들이 한 자리에 머물며 이웃이 되는 장면.",
+      "created": "2026-02-04T20:40:00+09:00",
+      "source": "sample",
+      "status": "organized",
+      "thought_form": "image",
+      "card_path": "cards/thought-table-between-stars.md"
+    },
+    {
+      "id": "thought-question-as-telescope",
+      "title": "질문은 망원경일까",
+      "summary": "좋은 질문은 답을 미루는 일이 아니라 더 정확한 방향을 보는 도구일 수 있다.",
+      "created": "2026-02-18T23:05:00+09:00",
+      "source": "sample",
+      "status": "organized",
+      "thought_form": "question",
+      "card_path": "cards/thought-question-as-telescope.md"
+    },
+    {
+      "id": "thought-light-kept-alive",
+      "title": "눈빛을 지키는 사람",
+      "summary": "오래 살아도 호기심과 생기를 잃지 않는 사람은 무엇을 반복할까.",
+      "created": "2026-03-11T19:20:00+09:00",
+      "source": "sample",
+      "status": "organized",
+      "thought_form": "question",
+      "card_path": "cards/thought-light-kept-alive.md"
+    },
+    {
+      "id": "thought-value-arrives",
+      "title": "가치는 도착해야 완성된다",
+      "summary": "만드는 기술보다 필요한 사람에게 끝까지 닿게 하는 책임을 생각한다.",
+      "created": "2026-03-26T18:15:00+09:00",
+      "source": "sample",
+      "status": "organized",
+      "thought_form": "principle",
+      "card_path": "cards/thought-value-arrives.md"
+    }
+  ]
+}
