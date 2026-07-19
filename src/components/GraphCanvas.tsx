@@ -21,15 +21,15 @@ const graphStyle = [
       'font-family': 'Pretendard, Inter, -apple-system, BlinkMacSystemFont, sans-serif',
       'font-size': 11,
       'font-weight': 600,
-      color: '#d1fac0',
+      color: '#d0d6e0',
       'text-opacity': 0,
-      'text-outline-color': '#0f1117',
+      'text-outline-color': '#08090a',
       'text-outline-width': 2,
       'text-valign': 'bottom',
       'text-margin-y': 7,
       width: 'mapData(connectionCount, 0, 8, 8, 18)',
       height: 'mapData(connectionCount, 0, 8, 8, 18)',
-      'background-color': '#91d478',
+      'background-color': '#8a8f98',
       'border-width': 0,
       'transition-property': 'opacity, background-color, border-width, width, height, text-opacity',
       'transition-duration': 150,
@@ -39,16 +39,16 @@ const graphStyle = [
     selector: 'node[kind = "index"]',
     style: {
       shape: 'ellipse',
-      'background-color': '#60a5fa',
-      color: '#bfdbfe',
+      'background-color': '#7170ff',
+      color: '#c9c8ff',
     },
   },
   {
     selector: 'edge',
     style: {
       width: 'mapData(weight, 1, 3, 0.55, 1.65)',
-      'line-color': '#93c5fd',
-      opacity: 0.34,
+      'line-color': '#686d84',
+      opacity: 0.74,
       'curve-style': 'haystack',
       'haystack-radius': 0.35,
       'transition-property': 'opacity, line-color, width',
@@ -76,7 +76,7 @@ const graphStyle = [
     selector: 'node.selected',
     style: {
       'background-color': '#ffffff',
-      'border-color': 'rgba(145,212,120,0.55)',
+      'border-color': '#eeeefe',
       'border-width': 2,
       color: '#ffffff',
       'text-opacity': 1,
@@ -90,7 +90,7 @@ const graphStyle = [
   },
   {
     selector: 'edge.active',
-    style: { 'line-color': '#91d478', opacity: 0.9, width: 1.8 },
+    style: { 'line-color': '#828fff', opacity: 0.95, width: 1.8 },
   },
 ] as unknown as StylesheetStyle[]
 
