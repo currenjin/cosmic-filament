@@ -32,7 +32,7 @@ describe('NodeDetails', () => {
     const onSelect = vi.fn()
     render(<NodeDetails nodeId="concept-light" graph={graph} basePath="/thoughts/" onClose={() => undefined} onSelect={onSelect} />)
     expect(screen.getByRole('heading', { name: '빛' })).toBeVisible()
-    expect(screen.getByText('2개의 생각이 이 지점에서 만남')).toBeVisible()
+    expect(screen.getByText('2개의 생각이 이 접점에서 연결됨')).toBeVisible()
     fireEvent.click(screen.getByRole('button', { name: '우주 속의 빛 보기' }))
     expect(onSelect).toHaveBeenCalledWith('thought-light')
   })

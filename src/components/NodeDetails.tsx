@@ -39,7 +39,7 @@ export function NodeDetails({ nodeId, graph, basePath, onClose, onSelect }: Node
         <button className="close-details" type="button" onClick={onClose} aria-label="닫기">×</button>
         <span className="eyebrow">COSMIC JUNCTION</span>
         <h2>{node.label}</h2>
-        <p>{thoughts.length}개의 생각이 이 지점에서 만남</p>
+        <p>{thoughts.length}개의 생각이 이 접점에서 연결됨</p>
         <div className="detail-list">
           {thoughts.map((thought) => (
             <button type="button" key={thought.id} aria-label={`${thought.label} 보기`} onClick={() => onSelect(thought.id)}>

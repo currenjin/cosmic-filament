@@ -8,12 +8,12 @@ export function JunctionToggle({ active, onChange }: JunctionToggleProps) {
     <button
       className="junction-toggle"
       type="button"
-      aria-label="만나는 지점 강조"
+      aria-label="접점 강조"
       aria-pressed={active}
-      title="만나는 지점 강조"
+      title="전체 구조를 유지하고 접점 강조"
       onClick={() => onChange(!active)}
     >
-      만남
+      접점 강조
     </button>
   )
 }
