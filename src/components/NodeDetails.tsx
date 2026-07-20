@@ -1,9 +1,9 @@
 import { findRelatedThoughts } from '../domain/graph'
-import type { CosmicWeb, WebNode } from '../domain/types'
+import type { FilamentGraph, FilamentNode } from '../domain/types'
 
 interface NodeDetailsProps {
   nodeId: string
-  web: CosmicWeb
+  graph: FilamentGraph
   basePath: string
   onClose: () => void
   onSelect: (nodeId: string) => void
@@ -15,22 +15,22 @@ function safeCardUrl(basePath: string, cardPath?: string): string | undefined {
   return `${base}${cardPath}`
 }
 
-function connectedNodes(web: CosmicWeb, nodeId: string): WebNode[] {
+function connectedNodes(graph: FilamentGraph, nodeId: string): FilamentNode[] {
   const ids = new Set<string>()
-  for (const edge of web.edges) {
+  for (const edge of graph.edges) {
     if (edge.source === nodeId) ids.add(edge.target)
     if (edge.target === nodeId) ids.add(edge.source)
   }
-  const nodesById = new Map(web.nodes.map((node) => [node.id, node]))
-  return [...ids].map((id) => nodesById.get(id)).filter((node): node is WebNode => node !== undefined)
+  const nodesById = new Map(graph.nodes.map((node) => [node.id, node]))
+  return [...ids].map((id) => nodesById.get(id)).filter((node): node is FilamentNode => node !== undefined)
 }
 
-export function NodeDetails({ nodeId, web, basePath, onClose, onSelect }: NodeDetailsProps) {
-  const node = web.nodes.find((candidate) => candidate.id === nodeId)
+export function NodeDetails({ nodeId, graph, basePath, onClose, onSelect }: NodeDetailsProps) {
+  const node = graph.nodes.find((candidate) => candidate.id === nodeId)
   if (!node) return null
 
   if (node.kind === 'index') {
-    const thoughts = connectedNodes(web, nodeId)
+    const thoughts = connectedNodes(graph, nodeId)
       .filter((candidate) => candidate.kind === 'thought')
       .sort((a, b) => a.label.localeCompare(b.label, 'ko'))
     return (
@@ -52,10 +52,10 @@ export function NodeDetails({ nodeId, web, basePath, onClose, onSelect }: NodeDe
     )
   }
 
-  const indexes = connectedNodes(web, nodeId)
+  const indexes = connectedNodes(graph, nodeId)
     .filter((candidate) => candidate.kind === 'index')
     .sort((a, b) => a.label.localeCompare(b.label, 'ko'))
-  const related = findRelatedThoughts(web, nodeId)
+  const related = findRelatedThoughts(graph, nodeId)
   const cardUrl = safeCardUrl(basePath, node.thought.card_path)
 
   return (

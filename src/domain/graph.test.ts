@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildCosmicWeb, findRelatedThoughts, getNeighborhoodIds, getOverlapIds } from './graph'
+import { buildFilamentGraph, findRelatedThoughts, getNeighborhoodIds, getOverlapIds } from './graph'
 import type { ThoughtDatabase } from './types'
 
 const database: ThoughtDatabase = {
@@ -20,33 +20,33 @@ const database: ThoughtDatabase = {
   ],
 }
 
-describe('buildCosmicWeb', () => {
+describe('buildFilamentGraph', () => {
   it('keeps valid thought-to-index filaments and reports orphan links', () => {
-    const web = buildCosmicWeb(database)
-    expect(web.nodes).toHaveLength(5)
-    expect(web.edges).toHaveLength(3)
-    expect(web.edges[0]).toMatchObject({ source: 'thought-light', target: 'concept-light', reason: "원문에 '빛'이 등장" })
-    expect(web.diagnostics).toEqual(['edge-orphan: missing target missing-concept'])
+    const graph = buildFilamentGraph(database)
+    expect(graph.nodes).toHaveLength(5)
+    expect(graph.edges).toHaveLength(3)
+    expect(graph.edges[0]).toMatchObject({ source: 'thought-light', target: 'concept-light', reason: "원문에 '빛'이 등장" })
+    expect(graph.diagnostics).toEqual(['edge-orphan: missing target missing-concept'])
   })
 
   it('marks index nodes by the number of connected thoughts', () => {
-    const web = buildCosmicWeb(database)
-    expect(web.nodes.find((node) => node.id === 'concept-light')).toMatchObject({ kind: 'index', connectionCount: 2 })
-    expect(web.nodes.find((node) => node.id === 'concept-space')).toMatchObject({ kind: 'index', connectionCount: 1 })
+    const graph = buildFilamentGraph(database)
+    expect(graph.nodes.find((node) => node.id === 'concept-light')).toMatchObject({ kind: 'index', connectionCount: 2 })
+    expect(graph.nodes.find((node) => node.id === 'concept-space')).toMatchObject({ kind: 'index', connectionCount: 1 })
   })
 })
 
 describe('graph exploration', () => {
   it('finds a thought, its indexes, and thoughts sharing those indexes', () => {
-    expect(getNeighborhoodIds(buildCosmicWeb(database), 'thought-light')).toEqual(new Set(['thought-light', 'concept-light', 'concept-space', 'thought-boy']))
+    expect(getNeighborhoodIds(buildFilamentGraph(database), 'thought-light')).toEqual(new Set(['thought-light', 'concept-light', 'concept-space', 'thought-boy']))
   })
 
   it('defines overlap only through index nodes connected to multiple thoughts', () => {
-    expect(getOverlapIds(buildCosmicWeb(database))).toEqual(new Set(['concept-light', 'thought-light', 'thought-boy']))
+    expect(getOverlapIds(buildFilamentGraph(database))).toEqual(new Set(['concept-light', 'thought-light', 'thought-boy']))
   })
 
   it('explains related thoughts with the exact shared indexes', () => {
-    expect(findRelatedThoughts(buildCosmicWeb(database), 'thought-light')).toEqual([
+    expect(findRelatedThoughts(buildFilamentGraph(database), 'thought-light')).toEqual([
       { thoughtId: 'thought-boy', thoughtTitle: '빛에 감싸인 소년', sharedIndexes: ['빛'] },
     ])
   })

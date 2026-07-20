@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { ViewModeSwitch } from './ViewModeSwitch'
 
 describe('ViewModeSwitch', () => {
-  it('exposes the Cosmic Web exploration modes and changes the active mode', () => {
+  it('exposes the Cosmic Filament exploration modes and changes the active mode', () => {
     const onChange = vi.fn()
     render(<ViewModeSwitch value="all" onChange={onChange} />)
     expect(screen.getByRole('button', { name: '전체' })).toHaveAttribute('aria-pressed', 'true')

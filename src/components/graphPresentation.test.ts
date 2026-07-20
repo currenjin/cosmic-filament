@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import type { CosmicWeb } from '../domain/types'
+import type { FilamentGraph } from '../domain/types'
 import { createInteractiveForceLayoutOptions, getEmphasisIds, graphLabel } from './graphPresentation'
 
-const web: CosmicWeb = {
+const graph: FilamentGraph = {
   nodes: [
     { id: 'thought:a', label: '첫 생각', kind: 'thought', connectionCount: 1, thought: { id: 'a', title: '첫 생각' } },
     { id: 'index:x', label: '성찰', kind: 'index', connectionCount: 2, concept: { id: 'x', name: '성찰' } },
@@ -18,7 +18,7 @@ const web: CosmicWeb = {
 
 describe('currenjin graph presentation', () => {
   it('emphasizes the anchor and its direct neighbors while dimming unrelated nodes', () => {
-    expect(getEmphasisIds(web, 'index:x')).toEqual({
+    expect(getEmphasisIds(graph, 'index:x')).toEqual({
       hot: new Set(['index:x']),
       neighbors: new Set(['thought:a', 'thought:b']),
       dimmed: new Set(['index:y']),
@@ -26,7 +26,7 @@ describe('currenjin graph presentation', () => {
   })
 
   it('keeps the full graph visible when there is no hover or focus anchor', () => {
-    expect(getEmphasisIds(web)).toEqual({
+    expect(getEmphasisIds(graph)).toEqual({
       hot: new Set(),
       neighbors: new Set(),
       dimmed: new Set(),
@@ -38,7 +38,7 @@ describe('currenjin graph presentation', () => {
     expect(graphLabel('짧은 제목')).toBe('짧은 제목')
   })
 
-  it('keeps force physics alive while allowing dragged nodes to spring back into the web', () => {
+  it('keeps force physics alive while allowing dragged nodes to spring back into the graph', () => {
     const options = createInteractiveForceLayoutOptions()
     expect(options).toMatchObject({
       name: 'd3-force',

@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { buildCosmicWeb } from '../domain/graph'
+import { buildFilamentGraph } from '../domain/graph'
 import type { ThoughtDatabase } from '../domain/types'
 import { NodeDetails } from './NodeDetails'
 
@@ -15,11 +15,11 @@ const database: ThoughtDatabase = {
     { id: 'edge-b', source: 'thought-boy', target: 'concept-light', type: 'mentions', reason: '빛에 감싸인 장면' },
   ],
 }
-const web = buildCosmicWeb(database)
+const graph = buildFilamentGraph(database)
 
 describe('NodeDetails', () => {
   it('shows a thought, its indexes, and thoughts joined through shared indexes', () => {
-    render(<NodeDetails nodeId="thought-light" web={web} basePath="/thoughts/" onClose={() => undefined} onSelect={() => undefined} />)
+    render(<NodeDetails nodeId="thought-light" graph={graph} basePath="/thoughts/" onClose={() => undefined} onSelect={() => undefined} />)
     expect(screen.getByRole('heading', { name: '우주 속의 빛' })).toBeVisible()
     expect(screen.getByText('광대한 우주에서 밝은 빛을 바라본다.')).toBeVisible()
     expect(screen.getByRole('button', { name: '빛 색인 보기' })).toBeVisible()
@@ -30,7 +30,7 @@ describe('NodeDetails', () => {
 
   it('lets the reader travel from an index to a connected thought', () => {
     const onSelect = vi.fn()
-    render(<NodeDetails nodeId="concept-light" web={web} basePath="/thoughts/" onClose={() => undefined} onSelect={onSelect} />)
+    render(<NodeDetails nodeId="concept-light" graph={graph} basePath="/thoughts/" onClose={() => undefined} onSelect={onSelect} />)
     expect(screen.getByRole('heading', { name: '빛' })).toBeVisible()
     expect(screen.getByText('2개의 생각이 이 지점에서 만남')).toBeVisible()
     fireEvent.click(screen.getByRole('button', { name: '우주 속의 빛 보기' }))

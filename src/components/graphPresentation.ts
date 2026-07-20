@@ -1,4 +1,4 @@
-import type { CosmicWeb } from '../domain/types'
+import type { FilamentGraph } from '../domain/types'
 
 const LABEL_MAX_LENGTH = 20
 
@@ -40,19 +40,19 @@ export function graphLabel(label: string): string {
     : label
 }
 
-export function getEmphasisIds(web: CosmicWeb, anchorId?: string): GraphEmphasis {
+export function getEmphasisIds(graph: FilamentGraph, anchorId?: string): GraphEmphasis {
   if (!anchorId) {
     return { hot: new Set(), neighbors: new Set(), dimmed: new Set() }
   }
 
   const neighbors = new Set<string>()
-  for (const edge of web.edges) {
+  for (const edge of graph.edges) {
     if (edge.source === anchorId) neighbors.add(edge.target)
     if (edge.target === anchorId) neighbors.add(edge.source)
   }
 
   const dimmed = new Set(
-    web.nodes
+    graph.nodes
       .map((node) => node.id)
       .filter((id) => id !== anchorId && !neighbors.has(id)),
   )

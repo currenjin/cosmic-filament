@@ -34,25 +34,25 @@ export interface ThoughtDatabase {
   edges: ThoughtLink[]
 }
 
-interface BaseWebNode {
+interface BaseFilamentNode {
   id: string
   label: string
   connectionCount: number
 }
 
-export interface ThoughtNode extends BaseWebNode {
+export interface ThoughtNode extends BaseFilamentNode {
   kind: 'thought'
   thought: Thought
 }
 
-export interface IndexNode extends BaseWebNode {
+export interface IndexNode extends BaseFilamentNode {
   kind: 'index'
   concept: Concept
 }
 
-export type WebNode = ThoughtNode | IndexNode
+export type FilamentNode = ThoughtNode | IndexNode
 
-export interface WebEdge {
+export interface FilamentEdge {
   id: string
   source: string
   target: string
@@ -62,9 +62,9 @@ export interface WebEdge {
   reason?: string
 }
 
-export interface CosmicWeb {
-  nodes: WebNode[]
-  edges: WebEdge[]
+export interface FilamentGraph {
+  nodes: FilamentNode[]
+  edges: FilamentEdge[]
   diagnostics: string[]
 }
 

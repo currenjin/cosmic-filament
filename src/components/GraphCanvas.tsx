@@ -2,14 +2,14 @@ import cytoscape, { type Core, type ElementDefinition, type StylesheetStyle } fr
 import d3Force from 'cytoscape-d3-force'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { getNeighborhoodIds, getOverlapIds } from '../domain/graph'
-import type { CosmicWeb } from '../domain/types'
+import type { FilamentGraph } from '../domain/types'
 import { createInteractiveForceLayoutOptions, getEmphasisIds, graphLabel } from './graphPresentation'
 import type { ViewMode } from './ViewModeSwitch'
 
 cytoscape.use(d3Force)
 
 interface GraphCanvasProps {
-  web: CosmicWeb
+  graph: FilamentGraph
   mode: ViewMode
   selectedId?: string
   query: string
@@ -99,17 +99,17 @@ const graphStyle = [
   },
 ] as unknown as StylesheetStyle[]
 
-function toElements(web: CosmicWeb): ElementDefinition[] {
+function toElements(graph: FilamentGraph): ElementDefinition[] {
   const duplicatePairs = new Map<string, number>()
-  for (const edge of web.edges) {
+  for (const edge of graph.edges) {
     const key = `${edge.source}::${edge.target}`
     duplicatePairs.set(key, (duplicatePairs.get(key) ?? 0) + 1)
   }
   return [
-    ...web.nodes.map((node) => ({
+    ...graph.nodes.map((node) => ({
       data: { id: node.id, label: graphLabel(node.label), kind: node.kind, connectionCount: node.connectionCount },
     })),
-    ...web.edges.map((edge) => ({
+    ...graph.edges.map((edge) => ({
       data: {
         id: edge.id,
         source: edge.source,
@@ -120,11 +120,11 @@ function toElements(web: CosmicWeb): ElementDefinition[] {
   ]
 }
 
-export function GraphCanvas({ web, mode, selectedId, query, showLabels, onSelect }: GraphCanvasProps) {
+export function GraphCanvas({ graph, mode, selectedId, query, showLabels, onSelect }: GraphCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const cyRef = useRef<Core | null>(null)
   const [ready, setReady] = useState(false)
-  const elements = useMemo(() => toElements(web), [web])
+  const elements = useMemo(() => toElements(graph), [graph])
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -142,7 +142,7 @@ export function GraphCanvas({ web, mode, selectedId, query, showLabels, onSelect
     cy.on('tap', 'node', (event) => onSelect(event.target.id()))
     cy.on('mouseover', 'node', (event) => {
       const anchorId = event.target.id()
-      const emphasis = getEmphasisIds(web, anchorId)
+      const emphasis = getEmphasisIds(graph, anchorId)
       cy.batch(() => {
         cy.elements().removeClass('hover-hot hover-neighbor hover-dim hover-active')
         cy.nodes().forEach((node) => {
@@ -184,16 +184,16 @@ export function GraphCanvas({ web, mode, selectedId, query, showLabels, onSelect
       cy.destroy()
       cyRef.current = null
     }
-  }, [elements, onSelect, web])
+  }, [elements, onSelect, graph])
 
   useEffect(() => {
     const cy = cyRef.current
     if (!cy || !ready) return
     const visible = mode === 'nearby' && selectedId
-      ? getNeighborhoodIds(web, selectedId)
+      ? getNeighborhoodIds(graph, selectedId)
       : mode === 'overlap'
-        ? getOverlapIds(web)
-        : new Set(web.nodes.map((node) => node.id))
+        ? getOverlapIds(graph)
+        : new Set(graph.nodes.map((node) => node.id))
     const normalizedQuery = query.trim().toLocaleLowerCase('ko')
 
     cy.batch(() => {
@@ -210,7 +210,7 @@ export function GraphCanvas({ web, mode, selectedId, query, showLabels, onSelect
         if (selectedId && (edge.source().id() === selectedId || edge.target().id() === selectedId)) edge.addClass('active')
       })
     })
-  }, [mode, query, ready, selectedId, web])
+  }, [mode, query, ready, selectedId, graph])
 
   useEffect(() => {
     const cy = cyRef.current
@@ -224,7 +224,7 @@ export function GraphCanvas({ web, mode, selectedId, query, showLabels, onSelect
   }
 
   return (
-    <section className="graph-stage" aria-label="Cosmic Web 그래프">
+    <section className="graph-stage" aria-label="Cosmic Filament 그래프">
       <div ref={containerRef} className="cytoscape-canvas" />
       <div className="graph-controls" aria-label="그래프 조절">
         <button type="button" onClick={() => zoomBy(1.25)} aria-label="확대">＋</button>

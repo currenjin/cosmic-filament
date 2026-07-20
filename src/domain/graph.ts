@@ -1,20 +1,20 @@
-import type { CosmicWeb, RelatedThought, ThoughtDatabase, WebEdge, WebNode } from './types'
+import type { FilamentGraph, RelatedThought, ThoughtDatabase, FilamentEdge, FilamentNode } from './types'
 
-function adjacencyFor(web: CosmicWeb): Map<string, Set<string>> {
+function adjacencyFor(graph: FilamentGraph): Map<string, Set<string>> {
   const adjacency = new Map<string, Set<string>>()
-  for (const node of web.nodes) adjacency.set(node.id, new Set())
-  for (const edge of web.edges) {
+  for (const node of graph.nodes) adjacency.set(node.id, new Set())
+  for (const edge of graph.edges) {
     adjacency.get(edge.source)?.add(edge.target)
     adjacency.get(edge.target)?.add(edge.source)
   }
   return adjacency
 }
 
-export function buildCosmicWeb(database: ThoughtDatabase): CosmicWeb {
+export function buildFilamentGraph(database: ThoughtDatabase): FilamentGraph {
   const thoughtsById = new Map(database.thoughts.map((thought) => [thought.id, thought]))
   const conceptsById = new Map(database.concepts.map((concept) => [concept.id, concept]))
   const diagnostics: string[] = []
-  const validEdges: WebEdge[] = []
+  const validEdges: FilamentEdge[] = []
 
   for (const edge of database.edges) {
     if (!thoughtsById.has(edge.source)) {
@@ -45,15 +45,15 @@ export function buildCosmicWeb(database: ThoughtDatabase): CosmicWeb {
     connectionsByThought.set(edge.source, (connectionsByThought.get(edge.source) ?? 0) + 1)
   }
 
-  const nodes: WebNode[] = [
-    ...database.thoughts.map((thought): WebNode => ({
+  const nodes: FilamentNode[] = [
+    ...database.thoughts.map((thought): FilamentNode => ({
       id: thought.id,
       label: thought.title,
       kind: 'thought',
       thought,
       connectionCount: connectionsByThought.get(thought.id) ?? 0,
     })),
-    ...database.concepts.map((concept): WebNode => ({
+    ...database.concepts.map((concept): FilamentNode => ({
       id: concept.id,
       label: concept.name,
       kind: 'index',
@@ -65,8 +65,8 @@ export function buildCosmicWeb(database: ThoughtDatabase): CosmicWeb {
   return { nodes, edges: validEdges, diagnostics }
 }
 
-export function getNeighborhoodIds(web: CosmicWeb, selectedId: string): Set<string> {
-  const adjacency = adjacencyFor(web)
+export function getNeighborhoodIds(graph: FilamentGraph, selectedId: string): Set<string> {
+  const adjacency = adjacencyFor(graph)
   if (!adjacency.has(selectedId)) return new Set()
   const result = new Set([selectedId])
   let frontier = new Set([selectedId])
@@ -83,10 +83,10 @@ export function getNeighborhoodIds(web: CosmicWeb, selectedId: string): Set<stri
   return result
 }
 
-export function getOverlapIds(web: CosmicWeb): Set<string> {
-  const adjacency = adjacencyFor(web)
+export function getOverlapIds(graph: FilamentGraph): Set<string> {
+  const adjacency = adjacencyFor(graph)
   const result = new Set<string>()
-  for (const node of web.nodes) {
+  for (const node of graph.nodes) {
     if (node.kind !== 'index' || node.connectionCount < 2) continue
     result.add(node.id)
     for (const thoughtId of adjacency.get(node.id) ?? []) result.add(thoughtId)
@@ -94,9 +94,9 @@ export function getOverlapIds(web: CosmicWeb): Set<string> {
   return result
 }
 
-export function findRelatedThoughts(web: CosmicWeb, thoughtId: string): RelatedThought[] {
-  const nodesById = new Map(web.nodes.map((node) => [node.id, node]))
-  const adjacency = adjacencyFor(web)
+export function findRelatedThoughts(graph: FilamentGraph, thoughtId: string): RelatedThought[] {
+  const nodesById = new Map(graph.nodes.map((node) => [node.id, node]))
+  const adjacency = adjacencyFor(graph)
   const related = new Map<string, Set<string>>()
 
   for (const indexId of adjacency.get(thoughtId) ?? []) {

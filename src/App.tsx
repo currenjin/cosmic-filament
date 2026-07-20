@@ -3,7 +3,7 @@ import { LabelToggle } from './components/LabelToggle'
 import { NodeDetails } from './components/NodeDetails'
 import { ViewModeSwitch, type ViewMode } from './components/ViewModeSwitch'
 import { loadThoughtDatabase } from './domain/data'
-import { buildCosmicWeb } from './domain/graph'
+import { buildFilamentGraph } from './domain/graph'
 import type { ThoughtDatabase } from './domain/types'
 import './styles.css'
 
@@ -35,12 +35,12 @@ export default function App({ initialDatabase }: AppProps) {
     return () => controller.abort()
   }, [initialDatabase])
 
-  const web = useMemo(() => database ? buildCosmicWeb(database) : undefined, [database])
+  const graph = useMemo(() => database ? buildFilamentGraph(database) : undefined, [database])
   const searchResults = useMemo(() => {
     const normalized = query.trim().toLocaleLowerCase('ko')
-    if (!web || !normalized) return []
-    return web.nodes.filter((node) => node.label.toLocaleLowerCase('ko').includes(normalized)).slice(0, 8)
-  }, [query, web])
+    if (!graph || !normalized) return []
+    return graph.nodes.filter((node) => node.label.toLocaleLowerCase('ko').includes(normalized)).slice(0, 8)
+  }, [query, graph])
 
   const selectNode = useCallback((nodeId: string) => {
     setSelectedId(nodeId)
@@ -53,14 +53,14 @@ export default function App({ initialDatabase }: AppProps) {
       <main className="status-screen">
         <span className="brand-mark" aria-hidden="true">✦</span>
         <h1>Cosmic Filament</h1>
-        <p>우주망을 불러오지 못했습니다.</p>
+        <p>Cosmic Filament를 불러오지 못했습니다.</p>
         <code>{error}</code>
         <button type="button" onClick={() => window.location.reload()}>다시 시도</button>
       </main>
     )
   }
 
-  if (!web) {
+  if (!graph) {
     return (
       <main className="status-screen" aria-live="polite">
         <span className="brand-mark pulse" aria-hidden="true">✦</span>
@@ -70,8 +70,8 @@ export default function App({ initialDatabase }: AppProps) {
     )
   }
 
-  const thoughtCount = web.nodes.filter((node) => node.kind === 'thought').length
-  const indexCount = web.nodes.filter((node) => node.kind === 'index').length
+  const thoughtCount = graph.nodes.filter((node) => node.kind === 'thought').length
+  const indexCount = graph.nodes.filter((node) => node.kind === 'index').length
 
   return (
     <main className="app-shell">
@@ -80,7 +80,7 @@ export default function App({ initialDatabase }: AppProps) {
           <span className="brand-mark" aria-hidden="true">✦</span>
           <div>
             <h1>Cosmic Filament</h1>
-            <p>{thoughtCount}개의 생각 · {indexCount}개의 색인 · 하나의 Cosmic Web</p>
+            <p>{thoughtCount}개의 생각 · {indexCount}개의 색인</p>
           </div>
         </div>
         <button className="icon-button" type="button" onClick={() => setSearchOpen((open) => !open)} aria-label="생각과 색인 검색" aria-expanded={searchOpen}>⌕</button>
@@ -102,20 +102,20 @@ export default function App({ initialDatabase }: AppProps) {
         </section>
       )}
 
-      <Suspense fallback={<div className="graph-loading">Cosmic Web을 펼치는 중…</div>}>
-        <GraphCanvas web={web} mode={mode} selectedId={selectedId} query={query} showLabels={showLabels} onSelect={selectNode} />
+      <Suspense fallback={<div className="graph-loading">Cosmic Filament를 펼치는 중…</div>}>
+        <GraphCanvas graph={graph} mode={mode} selectedId={selectedId} query={query} showLabels={showLabels} onSelect={selectNode} />
       </Suspense>
       <LabelToggle visible={showLabels} onChange={setShowLabels} />
       <ViewModeSwitch value={mode} onChange={setMode} nearbyDisabled={!selectedId} />
 
-      {web.diagnostics.length > 0 && (
-        <div className="diagnostic" title={web.diagnostics.join('\n')}>{web.diagnostics.length}개의 연결을 표시하지 못함</div>
+      {graph.diagnostics.length > 0 && (
+        <div className="diagnostic" title={graph.diagnostics.join('\n')}>{graph.diagnostics.length}개의 연결을 표시하지 못함</div>
       )}
 
       {selectedId && (
         <NodeDetails
           nodeId={selectedId}
-          web={web}
+          graph={graph}
           basePath={basePath}
           onClose={() => {
             setSelectedId(undefined)

@@ -1,7 +1,7 @@
 {
   "name": "cosmic-filament",
   "version": "0.1.0",
-  "description": "Discover the cosmic web hidden across indexed thoughts.",
+  "description": "Explore the filaments connecting indexed thoughts.",
   "private": false,
   "type": "module",
   "scripts": {

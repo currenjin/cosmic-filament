@@ -15,7 +15,7 @@ describe('parseThoughtDatabase', () => {
     })
   })
 
-  it('rejects malformed public data instead of rendering a misleading web', () => {
+  it('rejects malformed public data instead of rendering a misleading graph', () => {
     expect(() => parseThoughtDatabase(
       { thoughts: [{ id: 'thought-1' }] },
       { concepts: [] },
