@@ -28,6 +28,19 @@ jobs:
           npm run lint
           npm run build
 
+      - name: Verify container routes
+        run: |
+          docker build --tag cosmic-filament:smoke .
+          docker run --detach --name cosmic-filament-smoke --publish 127.0.0.1:18081:8080 cosmic-filament:smoke
+          trap 'docker rm --force cosmic-filament-smoke' EXIT
+          for attempt in {1..30}; do
+            curl --fail --silent http://127.0.0.1:18081/healthz && break
+            sleep 1
+          done
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:18081/thoughts)" = 308
+          test "$(curl --silent --head http://127.0.0.1:18081/thoughts | tr -d '\r' | awk '/^[Ll]ocation:/ {print $2}')" = /thoughts/
+          curl --fail --silent http://127.0.0.1:18081/thoughts/ >/dev/null
+
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
 
