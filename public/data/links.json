@@ -1,16 +1,15 @@
 {
   "edges": [
-    { "id": "sample-edge-01", "source": "thought-signal-in-darkness", "target": "concept-small-motion", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "오늘의 작은 선택이 다음 선택에 영향을 준다" },
-    { "id": "sample-edge-02", "source": "thought-signal-in-darkness", "target": "concept-light", "type": "relates_to", "confidence": "candidate", "basis": "derived", "reason": "아직 빛이 보이지 않는 시간도 견딘다" },
-    { "id": "sample-edge-03", "source": "thought-patient-orbit", "target": "concept-small-motion", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "오래 이어갈 수 있는 작은 선택" },
-    { "id": "sample-edge-04", "source": "thought-table-between-stars", "target": "concept-neighbor", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "함께 먹고 이야기하며 가까워진다" },
-    { "id": "sample-edge-05", "source": "thought-table-between-stars", "target": "concept-light", "type": "relates_to", "confidence": "candidate", "basis": "derived", "reason": "대화를 나누는 동안 서로의 표정이 밝아진다" },
-    { "id": "sample-edge-06", "source": "thought-question-as-telescope", "target": "concept-question", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "질문으로 보고 싶은 것과 갈 방향을 분명히 한다" },
-    { "id": "sample-edge-07", "source": "thought-question-as-telescope", "target": "concept-responsibility", "type": "relates_to", "confidence": "candidate", "basis": "derived", "reason": "질문만 남기지 않고 자신의 답을 선택한다" },
-    { "id": "sample-edge-08", "source": "thought-question-as-telescope", "target": "concept-curiosity", "type": "relates_to", "confidence": "candidate", "basis": "derived", "reason": "더 알고 싶은 마음에서 질문이 시작된다" },
-    { "id": "sample-edge-09", "source": "thought-light-kept-alive", "target": "concept-light", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "나이가 들어도 눈빛을 잃지 않고 싶다" },
-    { "id": "sample-edge-10", "source": "thought-light-kept-alive", "target": "concept-curiosity", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "익숙한 것도 계속 궁금해한다" },
-    { "id": "sample-edge-11", "source": "thought-value-arrives", "target": "concept-responsibility", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "필요한 사람이 실제로 쓰게 만드는 일까지 맡는다" },
-    { "id": "sample-edge-12", "source": "thought-value-arrives", "target": "concept-neighbor", "type": "possible_theme", "confidence": "candidate", "basis": "contextual", "reason": "좋은 것이 결국 구체적인 누군가의 삶에 닿아야 한다" }
+    { "id": "sample-edge-01", "source": "thought-signal-in-darkness", "target": "concept-small-motion", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "걷는 동안 막혀 있던 생각이 자연스럽게 풀린다" },
+    { "id": "sample-edge-02", "source": "thought-signal-in-darkness", "target": "concept-light", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "같은 자리에서 맴돌던 생각을 정리한다" },
+    { "id": "sample-edge-03", "source": "thought-patient-orbit", "target": "concept-small-motion", "type": "relates_to", "confidence": "candidate", "basis": "derived", "reason": "막힐 때 잠깐 걸으며 자리를 벗어난다" },
+    { "id": "sample-edge-04", "source": "thought-patient-orbit", "target": "concept-neighbor", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "자리를 옮겨 시선과 흐름을 바꾼다" },
+    { "id": "sample-edge-05", "source": "thought-table-between-stars", "target": "concept-question", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "결론을 서두르지 않는 대화에 관한 생각이다" },
+    { "id": "sample-edge-06", "source": "thought-question-as-telescope", "target": "concept-question", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "상대의 말을 제대로 듣는 대화를 생각한다" },
+    { "id": "sample-edge-07", "source": "thought-question-as-telescope", "target": "concept-light", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "대화 전에 자신의 생각을 먼저 정리한다" },
+    { "id": "sample-edge-08", "source": "thought-light-kept-alive", "target": "concept-responsibility", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "억지로 의지를 끌어내지 않아도 이어지는 습관을 만든다" },
+    { "id": "sample-edge-09", "source": "thought-light-kept-alive", "target": "concept-curiosity", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "시작하기 쉬운 환경이 꾸준함을 돕는다" },
+    { "id": "sample-edge-10", "source": "thought-value-arrives", "target": "concept-curiosity", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "책상 위 환경을 지금 할 일 하나에 맞춘다" },
+    { "id": "sample-edge-11", "source": "thought-value-arrives", "target": "concept-light", "type": "mentions", "confidence": "strong", "basis": "explicit", "reason": "당장 하지 않을 일을 치워 시작 전에 필요한 결정을 줄인다" }
   ]
 }

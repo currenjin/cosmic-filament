@@ -2,8 +2,8 @@
   "thoughts": [
     {
       "id": "thought-signal-in-darkness",
-      "title": "눈에 보이지 않아도 쌓이는 것",
-      "summary": "별다른 변화가 없는 날에도 오늘의 작은 선택은 남아 다음 선택에 영향을 준다.",
+      "title": "걷다 보면 생각이 풀린다",
+      "summary": "머릿속에서 같은 생각이 맴돌 때는 잠깐 걷는 편이 책상에 계속 앉아 있는 것보다 낫다.",
       "created": "2026-01-08T21:10:00+09:00",
       "source": "sample",
       "status": "organized",
@@ -12,8 +12,8 @@
     },
     {
       "id": "thought-patient-orbit",
-      "title": "천천히 가도 계속 가는 쪽",
-      "summary": "눈에 띄는 속도보다 오래 반복할 수 있는 방식이 결국 더 멀리 간다.",
+      "title": "막힐 땐 잠깐 밖으로",
+      "summary": "한 문제를 오래 붙들고 있을수록 자리를 벗어나 시선을 바꾸는 시간이 필요하다.",
       "created": "2026-01-19T07:30:00+09:00",
       "source": "sample",
       "status": "organized",
@@ -22,42 +22,42 @@
     },
     {
       "id": "thought-table-between-stars",
-      "title": "한 식탁에서 이웃이 되는 순간",
-      "summary": "서로 다른 삶을 살아온 사람도 함께 먹고 이야기하는 동안 조금씩 가까워진다.",
+      "title": "좋은 대화는 답을 재촉하지 않는다",
+      "summary": "당장 결론을 내리지 않아도 편하게 머물 수 있는 대화가 오래 남는다.",
       "created": "2026-02-04T20:40:00+09:00",
       "source": "sample",
       "status": "organized",
-      "thought_form": "image",
+      "thought_form": "reflection",
       "card_path": "cards/thought-table-between-stars.md"
     },
     {
       "id": "thought-question-as-telescope",
-      "title": "질문은 방향을 찾는 일",
-      "summary": "좋은 질문은 답을 피하기 위한 게 아니라 무엇을 보고 어디로 갈지 분명하게 해준다.",
+      "title": "대화 전에 혼자 생각할 시간",
+      "summary": "내 생각을 먼저 정리해 두면 상대의 말을 반박할 준비 없이 들을 수 있다.",
       "created": "2026-02-18T23:05:00+09:00",
       "source": "sample",
       "status": "organized",
-      "thought_form": "question",
+      "thought_form": "reflection",
       "card_path": "cards/thought-question-as-telescope.md"
     },
     {
       "id": "thought-light-kept-alive",
-      "title": "나이 들어도 눈빛을 잃지 않으려면",
-      "summary": "익숙한 것을 다 안다고 넘기지 않고 계속 궁금해하는 사람이 되고 싶다.",
+      "title": "꾸준함은 의지보다 환경에서 나온다",
+      "summary": "매번 마음을 다잡기보다 시작하기 쉬운 자리를 만들어 두는 편이 오래 간다.",
       "created": "2026-03-11T19:20:00+09:00",
       "source": "sample",
       "status": "organized",
-      "thought_form": "question",
+      "thought_form": "principle",
       "card_path": "cards/thought-light-kept-alive.md"
     },
     {
       "id": "thought-value-arrives",
-      "title": "좋은 건 결국 누군가에게 닿아야 한다",
-      "summary": "잘 만드는 것만큼 필요한 사람이 실제로 쓰게 만드는 일도 중요하다.",
+      "title": "책상에는 다음 할 일만 남겨두기",
+      "summary": "해야 할 일이 한꺼번에 보이면 시작이 무거워진다. 지금 할 것 하나만 눈앞에 두자.",
       "created": "2026-03-26T18:15:00+09:00",
       "source": "sample",
       "status": "organized",
-      "thought_form": "principle",
+      "thought_form": "practice",
       "card_path": "cards/thought-value-arrives.md"
     }
   ]
