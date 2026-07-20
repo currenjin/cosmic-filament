@@ -8,12 +8,12 @@ export function LabelToggle({ visible, onChange }: LabelToggleProps) {
     <button
       className="label-toggle"
       type="button"
-      aria-label="노드 이름 표시"
+      aria-label="이름 모두 보기"
       aria-pressed={visible}
-      title="노드 이름 표시"
+      title="이름 모두 보기"
       onClick={() => onChange(!visible)}
     >
-      Aa
+      이름
     </button>
   )
 }

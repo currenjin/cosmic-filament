@@ -7,8 +7,8 @@ interface ViewModeSwitchProps {
 }
 
 const modes: Array<{ value: ViewMode; label: string }> = [
-  { value: 'all', label: '전체' },
-  { value: 'nearby', label: '내 주변' },
+  { value: 'all', label: '모두' },
+  { value: 'nearby', label: '연결' },
   { value: 'overlap', label: '겹침' },
 ]
 

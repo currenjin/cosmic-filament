@@ -47,7 +47,7 @@ export function getViewPresentation(graph: FilamentGraph, mode: ViewMode, select
     return { visible: getNeighborhoodIds(graph, selectedId), highlighted: new Set() }
   }
   if (mode === 'overlap') {
-    return { visible: allNodeIds, highlighted: getOverlapIds(graph) }
+    return { visible: getOverlapIds(graph), highlighted: new Set() }
   }
   return { visible: allNodeIds, highlighted: new Set() }
 }

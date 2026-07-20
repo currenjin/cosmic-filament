@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildFilamentGraph, findRelatedThoughts, getNeighborhoodIds, getOverlapIds } from './graph'
+import { buildFilamentGraph, findRelatedThoughts, getJunctionIds, getNeighborhoodIds, getOverlapIds } from './graph'
 import type { ThoughtDatabase } from './types'
 
 const database: ThoughtDatabase = {
@@ -41,8 +41,12 @@ describe('graph exploration', () => {
     expect(getNeighborhoodIds(buildFilamentGraph(database), 'thought-light')).toEqual(new Set(['thought-light', 'concept-light', 'concept-space', 'thought-boy']))
   })
 
-  it('defines overlap only through index nodes connected to multiple thoughts', () => {
+  it('finds shared indexes and their connected thoughts', () => {
     expect(getOverlapIds(buildFilamentGraph(database))).toEqual(new Set(['concept-light', 'thought-light', 'thought-boy']))
+  })
+
+  it('finds indexes where two or more thoughts meet', () => {
+    expect(getJunctionIds(buildFilamentGraph(database))).toEqual(new Set(['concept-light']))
   })
 
   it('explains related thoughts with the exact shared indexes', () => {

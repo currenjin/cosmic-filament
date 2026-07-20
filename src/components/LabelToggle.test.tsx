@@ -7,7 +7,8 @@ describe('LabelToggle', () => {
     const onChange = vi.fn()
     render(<LabelToggle visible={false} onChange={onChange} />)
 
-    const button = screen.getByRole('button', { name: '노드 이름 표시' })
+    const button = screen.getByRole('button', { name: '이름 모두 보기' })
+    expect(button).toHaveTextContent('이름')
     expect(button).toHaveAttribute('aria-pressed', 'false')
 
     fireEvent.click(button)

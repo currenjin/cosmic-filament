@@ -33,10 +33,10 @@ describe('currenjin graph presentation', () => {
     })
   })
 
-  it('highlights overlaps without fading the rest of the graph', () => {
+  it('shows only the thoughts and indexes that overlap', () => {
     expect(getViewPresentation(graph, 'overlap')).toEqual({
-      visible: new Set(['thought:a', 'index:x', 'thought:b', 'index:y']),
-      highlighted: new Set(['thought:a', 'index:x', 'thought:b']),
+      visible: new Set(['thought:a', 'index:x', 'thought:b']),
+      highlighted: new Set(),
     })
   })
 
