@@ -1,7 +1,7 @@
 import cytoscape, { type Core, type ElementDefinition, type StylesheetStyle } from 'cytoscape'
 import d3Force from 'cytoscape-d3-force'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { getNeighborhoodIds, getOverlapIds } from '../domain/graph'
+import { getJunctionIds, getNeighborhoodIds, getOverlapIds } from '../domain/graph'
 import type { FilamentGraph } from '../domain/types'
 import { createInteractiveForceLayoutOptions, getEmphasisIds, graphLabel } from './graphPresentation'
 import type { ViewMode } from './ViewModeSwitch'
@@ -14,6 +14,7 @@ interface GraphCanvasProps {
   selectedId?: string
   query: string
   showLabels: boolean
+  highlightJunctions: boolean
   onSelect: (nodeId: string) => void
 }
 
@@ -97,6 +98,22 @@ const graphStyle = [
     selector: 'edge.active',
     style: { 'line-color': '#828fff', opacity: 0.95, width: 1.8 },
   },
+  {
+    selector: 'node.junction-highlight',
+    style: {
+      width: 24,
+      height: 24,
+      'background-color': '#a9a8ff',
+      'border-color': 'rgba(214, 213, 255, 0.42)',
+      'border-width': 6,
+      color: '#ffffff',
+      'text-opacity': 1,
+    },
+  },
+  {
+    selector: 'edge.junction-edge',
+    style: { 'line-color': '#9d9cff', opacity: 0.98, width: 2.3 },
+  },
 ] as unknown as StylesheetStyle[]
 
 function toElements(graph: FilamentGraph): ElementDefinition[] {
@@ -120,11 +137,12 @@ function toElements(graph: FilamentGraph): ElementDefinition[] {
   ]
 }
 
-export function GraphCanvas({ graph, mode, selectedId, query, showLabels, onSelect }: GraphCanvasProps) {
+export function GraphCanvas({ graph, mode, selectedId, query, showLabels, highlightJunctions, onSelect }: GraphCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const cyRef = useRef<Core | null>(null)
   const [ready, setReady] = useState(false)
   const elements = useMemo(() => toElements(graph), [graph])
+  const junctionIds = useMemo(() => getJunctionIds(graph), [graph])
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -217,6 +235,21 @@ export function GraphCanvas({ graph, mode, selectedId, query, showLabels, onSele
     if (!cy || !ready) return
     cy.nodes().toggleClass('labels-visible', showLabels)
   }, [ready, showLabels])
+
+  useEffect(() => {
+    const cy = cyRef.current
+    if (!cy || !ready) return
+    cy.batch(() => {
+      cy.elements().removeClass('junction-highlight junction-edge')
+      if (!highlightJunctions) return
+      cy.nodes().forEach((node) => {
+        if (junctionIds.has(node.id())) node.addClass('junction-highlight')
+      })
+      cy.edges().forEach((edge) => {
+        if (junctionIds.has(edge.source().id()) || junctionIds.has(edge.target().id())) edge.addClass('junction-edge')
+      })
+    })
+  }, [highlightJunctions, junctionIds, ready])
 
   function zoomBy(factor: number) {
     const cy = cyRef.current

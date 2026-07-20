@@ -83,6 +83,14 @@ export function getNeighborhoodIds(graph: FilamentGraph, selectedId: string): Se
   return result
 }
 
+export function getJunctionIds(graph: FilamentGraph): Set<string> {
+  return new Set(
+    graph.nodes
+      .filter((node) => node.kind === 'index' && node.connectionCount >= 2)
+      .map((node) => node.id),
+  )
+}
+
 export function getOverlapIds(graph: FilamentGraph): Set<string> {
   const adjacency = adjacencyFor(graph)
   const result = new Set<string>()
