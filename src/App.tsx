@@ -1,5 +1,4 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
-import { JunctionToggle } from './components/JunctionToggle'
 import { LabelToggle } from './components/LabelToggle'
 import { NodeDetails } from './components/NodeDetails'
 import { ViewModeSwitch, type ViewMode } from './components/ViewModeSwitch'
@@ -23,7 +22,6 @@ export default function App({ initialDatabase }: AppProps) {
   const [searchOpen, setSearchOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [showLabels, setShowLabels] = useState(false)
-  const [highlightJunctions, setHighlightJunctions] = useState(false)
 
   useEffect(() => {
     if (initialDatabase) return
@@ -105,10 +103,9 @@ export default function App({ initialDatabase }: AppProps) {
       )}
 
       <Suspense fallback={<div className="graph-loading">Cosmic Filament를 펼치는 중…</div>}>
-        <GraphCanvas graph={graph} mode={mode} selectedId={selectedId} query={query} showLabels={showLabels} highlightJunctions={highlightJunctions} onSelect={selectNode} />
+        <GraphCanvas graph={graph} mode={mode} selectedId={selectedId} query={query} showLabels={showLabels} onSelect={selectNode} />
       </Suspense>
       <LabelToggle visible={showLabels} onChange={setShowLabels} />
-      <JunctionToggle active={highlightJunctions} onChange={setHighlightJunctions} />
       <ViewModeSwitch value={mode} onChange={setMode} nearbyDisabled={!selectedId} />
 
       {graph.diagnostics.length > 0 && (

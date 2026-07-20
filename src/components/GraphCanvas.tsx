@@ -1,9 +1,8 @@
 import cytoscape, { type Core, type ElementDefinition, type StylesheetStyle } from 'cytoscape'
 import d3Force from 'cytoscape-d3-force'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { getJunctionIds, getNeighborhoodIds, getOverlapIds } from '../domain/graph'
 import type { FilamentGraph } from '../domain/types'
-import { createInteractiveForceLayoutOptions, getEmphasisIds, graphLabel } from './graphPresentation'
+import { createInteractiveForceLayoutOptions, getEmphasisIds, getViewPresentation, graphLabel } from './graphPresentation'
 import type { ViewMode } from './ViewModeSwitch'
 
 cytoscape.use(d3Force)
@@ -14,7 +13,6 @@ interface GraphCanvasProps {
   selectedId?: string
   query: string
   showLabels: boolean
-  highlightJunctions: boolean
   onSelect: (nodeId: string) => void
 }
 
@@ -99,19 +97,26 @@ const graphStyle = [
     style: { 'line-color': '#828fff', opacity: 0.95, width: 1.8 },
   },
   {
-    selector: 'node.junction-highlight',
+    selector: 'node.overlap-highlight',
     style: {
-      width: 24,
-      height: 24,
-      'background-color': '#a9a8ff',
-      'border-color': 'rgba(214, 213, 255, 0.42)',
-      'border-width': 6,
+      'background-color': '#d9d9ff',
+      'border-color': 'rgba(214, 213, 255, 0.48)',
+      'border-width': 3,
       color: '#ffffff',
       'text-opacity': 1,
     },
   },
   {
-    selector: 'edge.junction-edge',
+    selector: 'node[kind = "index"].overlap-highlight',
+    style: {
+      width: 24,
+      height: 24,
+      'background-color': '#a9a8ff',
+      'border-width': 6,
+    },
+  },
+  {
+    selector: 'edge.overlap-edge',
     style: { 'line-color': '#9d9cff', opacity: 0.98, width: 2.3 },
   },
 ] as unknown as StylesheetStyle[]
@@ -137,12 +142,11 @@ function toElements(graph: FilamentGraph): ElementDefinition[] {
   ]
 }
 
-export function GraphCanvas({ graph, mode, selectedId, query, showLabels, highlightJunctions, onSelect }: GraphCanvasProps) {
+export function GraphCanvas({ graph, mode, selectedId, query, showLabels, onSelect }: GraphCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const cyRef = useRef<Core | null>(null)
   const [ready, setReady] = useState(false)
   const elements = useMemo(() => toElements(graph), [graph])
-  const junctionIds = useMemo(() => getJunctionIds(graph), [graph])
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -207,17 +211,14 @@ export function GraphCanvas({ graph, mode, selectedId, query, showLabels, highli
   useEffect(() => {
     const cy = cyRef.current
     if (!cy || !ready) return
-    const visible = mode === 'nearby' && selectedId
-      ? getNeighborhoodIds(graph, selectedId)
-      : mode === 'overlap'
-        ? getOverlapIds(graph)
-        : new Set(graph.nodes.map((node) => node.id))
+    const { visible, highlighted } = getViewPresentation(graph, mode, selectedId)
     const normalizedQuery = query.trim().toLocaleLowerCase('ko')
 
     cy.batch(() => {
-      cy.elements().removeClass('faded active selected search-hit')
+      cy.elements().removeClass('faded active selected search-hit overlap-highlight overlap-edge')
       cy.nodes().forEach((node) => {
         if (!visible.has(node.id())) node.addClass('faded')
+        if (highlighted.has(node.id())) node.addClass('overlap-highlight')
         if (node.id() === selectedId) node.addClass('selected')
         if (normalizedQuery && String(node.data('label')).toLocaleLowerCase('ko').includes(normalizedQuery)) {
           node.addClass('search-hit')
@@ -225,6 +226,7 @@ export function GraphCanvas({ graph, mode, selectedId, query, showLabels, highli
       })
       cy.edges().forEach((edge) => {
         if (!visible.has(edge.source().id()) || !visible.has(edge.target().id())) edge.addClass('faded')
+        if (highlighted.has(edge.source().id()) && highlighted.has(edge.target().id())) edge.addClass('overlap-edge')
         if (selectedId && (edge.source().id() === selectedId || edge.target().id() === selectedId)) edge.addClass('active')
       })
     })
@@ -235,21 +237,6 @@ export function GraphCanvas({ graph, mode, selectedId, query, showLabels, highli
     if (!cy || !ready) return
     cy.nodes().toggleClass('labels-visible', showLabels)
   }, [ready, showLabels])
-
-  useEffect(() => {
-    const cy = cyRef.current
-    if (!cy || !ready) return
-    cy.batch(() => {
-      cy.elements().removeClass('junction-highlight junction-edge')
-      if (!highlightJunctions) return
-      cy.nodes().forEach((node) => {
-        if (junctionIds.has(node.id())) node.addClass('junction-highlight')
-      })
-      cy.edges().forEach((edge) => {
-        if (junctionIds.has(edge.source().id()) || junctionIds.has(edge.target().id())) edge.addClass('junction-edge')
-      })
-    })
-  }, [highlightJunctions, junctionIds, ready])
 
   function zoomBy(factor: number) {
     const cy = cyRef.current

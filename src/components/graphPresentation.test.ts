@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { FilamentGraph } from '../domain/types'
-import { createInteractiveForceLayoutOptions, getEmphasisIds, graphLabel } from './graphPresentation'
+import { createInteractiveForceLayoutOptions, getEmphasisIds, getViewPresentation, graphLabel } from './graphPresentation'
 
 const graph: FilamentGraph = {
   nodes: [
@@ -30,6 +30,13 @@ describe('currenjin graph presentation', () => {
       hot: new Set(),
       neighbors: new Set(),
       dimmed: new Set(),
+    })
+  })
+
+  it('highlights overlaps without fading the rest of the graph', () => {
+    expect(getViewPresentation(graph, 'overlap')).toEqual({
+      visible: new Set(['thought:a', 'index:x', 'thought:b', 'index:y']),
+      highlighted: new Set(['thought:a', 'index:x', 'thought:b']),
     })
   })
 

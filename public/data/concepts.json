@@ -1,6 +1,6 @@
 {
   "concepts": [
-    { "id": "concept-small-motion", "name": "작은 움직임", "status": "sample" },
+    { "id": "concept-small-motion", "name": "작은 선택", "status": "sample" },
     { "id": "concept-light", "name": "빛", "status": "sample" },
     { "id": "concept-neighbor", "name": "이웃", "status": "sample" },
     { "id": "concept-question", "name": "질문", "status": "sample" },

@@ -1,4 +1,6 @@
+import { getNeighborhoodIds, getOverlapIds } from '../domain/graph'
 import type { FilamentGraph } from '../domain/types'
+import type { ViewMode } from './ViewModeSwitch'
 
 const LABEL_MAX_LENGTH = 20
 
@@ -32,6 +34,22 @@ export interface GraphEmphasis {
   hot: Set<string>
   neighbors: Set<string>
   dimmed: Set<string>
+}
+
+export interface ViewPresentation {
+  visible: Set<string>
+  highlighted: Set<string>
+}
+
+export function getViewPresentation(graph: FilamentGraph, mode: ViewMode, selectedId?: string): ViewPresentation {
+  const allNodeIds = new Set(graph.nodes.map((node) => node.id))
+  if (mode === 'nearby' && selectedId) {
+    return { visible: getNeighborhoodIds(graph, selectedId), highlighted: new Set() }
+  }
+  if (mode === 'overlap') {
+    return { visible: allNodeIds, highlighted: getOverlapIds(graph) }
+  }
+  return { visible: allNodeIds, highlighted: new Set() }
 }
 
 export function graphLabel(label: string): string {
