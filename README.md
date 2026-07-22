@@ -8,7 +8,7 @@
 ![Cytoscape.js](https://img.shields.io/badge/Cytoscape.js-3.34-7170ff)
 ![License](https://img.shields.io/badge/license-MIT-f7f8f8)
 
-![공개용 예시 데이터에서 생각의 접점을 밝힌 Cosmic Filament 화면](docs/images/cosmic-filament-meetings.png)
+![공개용 예시 데이터에서 생각의 접점을 밝힌 Cosmic Filament 화면](docs/images/cosmic-filament-cosmos.png)
 
 _공개용 가상 데이터에서 여러 생각의 접점을 밝힌 화면입니다._
 
